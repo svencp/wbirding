@@ -1,0 +1,45 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug executable 'wbirding'",
+      "cargo": {
+        "args": [
+          "build",
+          "--bin=wbirding",
+          "--package=wbirding"
+        ],
+        "filter": {
+          "name": "wbirding",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "lldb",
+      "request": "launch",
+      "name": "Debug unit tests in executable 'wbirding'",
+      "cargo": {
+        "args": [
+          "test",
+          "--no-run",
+          "--bin=wbirding",
+          "--package=wbirding"
+        ],
+        "filter": {
+          "name": "wbirding",
+          "kind": "bin"
+        }
+      },
+      "args": [],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
