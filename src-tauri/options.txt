@@ -1,0 +1,27 @@
+#######################
+#                     #
+# Generated File      #
+#                     #
+# Date: 2023-02-14    #
+#                     #
+# Time: 22:48:20      #
+#                     #
+#######################
+
+
+fontSize	16
+lastSpeciesViewed	0
+lastSightingViewed	0
+myBlack	(0, 0, 0)
+myBlue	((7,140,245)
+myBlueGreen	(0, 177, 177)
+myDarkGray	(70, 70, 70)
+myGreen	(0, 177, 0)
+myLightBlue	(120, 220, 254)
+myLightGray	(220, 220, 220)
+myNormalGray	(177, 177, 177)
+myOlive	(177, 177, 0)
+myPurple	(110, 0, 110)
+myRed	(177, 0, 0)
+deadBirdIsSighting	true
+showResponseTimes	true
