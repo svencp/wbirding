@@ -10,16 +10,9 @@ use local_timestamps::*;
 use regex::Regex;
 use std::fs::{self, *};
 use std::io::prelude::*;
-use std::path::Path;
 
 pub const OPTIONS_FILENAME: &str = "./options.txt";
 pub const BODY_FILENAME: &str = "../src/body.css";
-// #[rustfmt::skip]
-// #[derive(Clone, Debug)]
-// pub struct Sdata {
-//     pub value: String,
-//     pub show: bool,
-// }
 
 #[derive(Clone, Debug)]
 pub struct SettingsText {
@@ -27,6 +20,30 @@ pub struct SettingsText {
 }
 
 impl SettingsText {
+    pub fn bring_in_options() -> Result<SettingsText, String> {
+        match SettingsText::load(OPTIONS_FILENAME) {
+            Ok(result) => {
+                // check if body.css is there
+                match fs::metadata(BODY_FILENAME) {
+                    Ok(_) => {
+                        // do nothing
+                    }
+
+                    Err(_) => {
+                        let font_size = result.get_integer("fontSize").unwrap();
+                        match make_body_css(BODY_FILENAME, font_size) {
+                            Ok(_) => {}
+                            Err(e) => return Err(e),
+                        }
+                    }
+                }
+
+                return Ok(result);
+            }
+            Err(e) => return Err(e),
+        }
+    }
+
     // Make a default struct in case it is needed
     pub fn default() -> SettingsText {
         let mut map = IndexMap::new();
@@ -34,64 +51,52 @@ impl SettingsText {
         SettingsText { map: map }
     }
 
-    // create a new empty SettingsText
-    pub fn new() -> SettingsText {
-        SettingsText {
-            map: IndexMap::new(),
-        }
-    }
-
-    // // implement a new SettingsText, you need the file parameter for testing purposes
-    // pub fn new(options_file: &str) -> SettingsText {
-    //     // Read the options file, if it is there and assign it to Settings
-    //     // If it s not there, then make a default one
-    //     let result = SettingsText::load(options_file);
-    //     if result.is_ok() {
-    //         return result.unwrap();
-    //     } else {
-    //         SettingsText::default()
-    //     }
-    // }
-
-    pub fn save_options_file(self: SettingsText, file: &str) -> Result<(), String> {
-        // if old option file exists - delete it - no worries on error
-        let path = file;
-        if let Ok(metadata) = fs::metadata(path) {
-            if metadata.is_file() {
-                let result = fs::remove_file(path);
-                if result.is_err() {
-                    return Err("Error in not removing old options file".to_string());
-                }
+    // Gets the key from itsself and then parses the string to get the i32
+    pub fn get_bool(&self, key: &str) -> Result<bool, String> {
+        let temp = self.map.get(key);
+        if temp.is_some() {
+            let value = temp.unwrap().parse::<bool>();
+            if value.is_ok() {
+                return Ok(value.unwrap());
             }
         }
+        return Err("Could not parse boolean in options".to_string());
+    }
 
-        let mut block = make_header();
-
-        // add the btreemap
-        for (key, value) in self.map.iter() {
-            block.push_str(key);
-            block.push('\t');
-            block.push_str(value);
-            block.push('\n');
+    // Gets the key from itsself and then parses the string to get the usize
+    pub fn get_integer(&self, key: &str) -> Result<usize, String> {
+        let temp = self.map.get(key);
+        if temp.is_some() {
+            let value = temp.unwrap().parse::<usize>();
+            if value.is_ok() {
+                return Ok(value.unwrap());
+            }
         }
+        return Err("Could not parse integer in options".to_string());
+    }
 
-        match fs::File::create(file) {
-            Ok(mut file) => match file.write_all(block.as_bytes()) {
-                Ok(_) => (),
-                Err(_) => {
-                    return Err("An error occurred while writing the options file".to_string())
-                }
-            },
-            Err(_) => return Err("An error occurred while creating the options file".to_string()),
-        }
-
-        Ok(())
+    fn init_map(map: &mut IndexMap<String, String>) {
+        map.insert("fontSize".to_string(), "16".to_string());
+        map.insert("lastSpeciesViewed".to_string(), "0".to_string());
+        map.insert("lastSightingViewed".to_string(), "0".to_string());
+        map.insert("myBlack".to_string(), "(0, 0, 0)".to_string());
+        map.insert("myBlue".to_string(), "((7,140,245)".to_string());
+        map.insert("myBlueGreen".to_string(), "(0, 177, 177)".to_string());
+        map.insert("myDarkGray".to_string(), "(70, 70, 70)".to_string());
+        map.insert("myGreen".to_string(), "(0, 177, 0)".to_string());
+        map.insert("myLightBlue".to_string(), "(120, 220, 254)".to_string());
+        map.insert("myLightGray".to_string(), "(220, 220, 220)".to_string());
+        map.insert("myNormalGray".to_string(), "(177, 177, 177)".to_string());
+        map.insert("myOlive".to_string(), "(177, 177, 0)".to_string());
+        map.insert("myPurple".to_string(), "(110, 0, 110)".to_string());
+        map.insert("myRed".to_string(), "(177, 0, 0)".to_string());
+        map.insert("deadBirdIsSighting".to_string(), "true".to_string());
+        map.insert("showResponseTimes".to_string(), "true".to_string());
     }
 
     // function to load the options file or create a default one
     pub fn load(file: &str) -> Result<SettingsText, String> {
         let ret;
-        // let path = file;
 
         // does the file exist
         match fs::metadata(file) {
@@ -108,6 +113,13 @@ impl SettingsText {
         }
 
         Ok(ret)
+    }
+
+    // create a new empty SettingsText
+    pub fn new() -> SettingsText {
+        SettingsText {
+            map: IndexMap::new(),
+        }
     }
 
     // // This functions checks if one can read and write to the directory.
@@ -157,25 +169,6 @@ impl SettingsText {
     //     }
     // }
 
-    fn init_map(map: &mut IndexMap<String, String>) {
-        map.insert("fontSize".to_string(), "16".to_string());
-        map.insert("lastSpeciesViewed".to_string(), "0".to_string());
-        map.insert("lastSightingViewed".to_string(), "0".to_string());
-        map.insert("myBlack".to_string(), "(0, 0, 0)".to_string());
-        map.insert("myBlue".to_string(), "((7,140,245)".to_string());
-        map.insert("myBlueGreen".to_string(), "(0, 177, 177)".to_string());
-        map.insert("myDarkGray".to_string(), "(70, 70, 70)".to_string());
-        map.insert("myGreen".to_string(), "(0, 177, 0)".to_string());
-        map.insert("myLightBlue".to_string(), "(120, 220, 254)".to_string());
-        map.insert("myLightGray".to_string(), "(220, 220, 220)".to_string());
-        map.insert("myNormalGray".to_string(), "(177, 177, 177)".to_string());
-        map.insert("myOlive".to_string(), "(177, 177, 0)".to_string());
-        map.insert("myPurple".to_string(), "(110, 0, 110)".to_string());
-        map.insert("myRed".to_string(), "(177, 0, 0)".to_string());
-        map.insert("deadBirdIsSighting".to_string(), "true".to_string());
-        map.insert("showResponseTimes".to_string(), "true".to_string());
-    }
-
     // // Reads the settings (options.txt) file into a treemap, returning a result
     // pub fn import(path: &str) -> Result<SettingsText, &str> {
     //     let str_file  = std::fs::read_to_string(path );
@@ -191,31 +184,6 @@ impl SettingsText {
 
     //     Ok(m)
     // }
-
-    // Gets the key from itsself and then parses the string to get the usize
-    pub fn get_integer(&self, key: &str) -> Result<usize, String> {
-        let temp = self.map.get(key);
-        if temp.is_some() {
-            let value = temp.unwrap().parse::<usize>();
-            if value.is_ok() {
-                return Ok(value.unwrap());
-            }
-        }
-        return Err("Could not parse integer in options".to_string());
-    }
-
-    // Gets the key from itsself and then parses the string to get the i32
-    // if errored; return true
-    pub fn get_bool(&self, key: &str) -> Result<bool, String> {
-        let temp = self.map.get(key);
-        if temp.is_some() {
-            let value = temp.unwrap().parse::<bool>();
-            if value.is_ok() {
-                return Ok(value.unwrap());
-            }
-        }
-        return Err("Could not parse boolean in options".to_string());
-    }
 
     // // Gets the key from itsself and then parses the string to get the i32
     // // if errored; return true
@@ -401,96 +369,16 @@ impl SettingsText {
     // }
 } // end of impl SettingsText
 
-// Function to make the header in the options file
-pub fn make_header() -> String {
-    let mut ret = String::new();
-    let now = lts_now();
-    let date = lts_to_date_string(now);
-    let time = lts_to_time_string(now);
-
-    ret.push_str("#######################\n");
-    ret.push_str("#                     #\n");
-    ret.push_str("# Generated File      #\n");
-    ret.push_str("#                     #\n");
-    ret.push_str("# Date: ");
-    ret.push_str(&date);
-    ret.push_str("    #\n");
-    ret.push_str("#                     #\n");
-    ret.push_str("# Time: ");
-    ret.push_str(&time);
-    ret.push_str("      #\n");
-    ret.push_str("#                     #\n");
-    ret.push_str("#######################\n");
-    ret.push_str("\n");
-    ret.push_str("\n");
-
-    return ret;
-}
-
-// Function to read in lines from options file into btreemap
-pub fn read_option_file_into(file: &str) -> Result<SettingsText, String> {
-    let res_file = File::open(file);
-    let mut ret = SettingsText::new();
-
-    match res_file {
-        Ok(_) => {
-            // Stores the iterator of lines of the file in lines variable.
-            let lines = read_lines(file.to_string());
-            // Iterate over the lines of the file.
-            for line in lines {
-                match line {
-                    Ok(lll) => {
-                        match lll.len() {
-                            // do nothing
-                            0 => {}
-                            _ => {
-                                let ch = lll.chars().nth(0).unwrap();
-                                match ch {
-                                    // do nothing
-                                    '#' => {}
-                                    _ => {
-                                        let split: Vec<&str> = lll.split("\t").collect();
-                                        match split.len() {
-                                            1 => {
-                                                return Err(
-                                                    "Only one split on one line in options file"
-                                                        .to_string(),
-                                                );
-                                            }
-
-                                            2 => {
-                                                ret.map.insert(
-                                                    split[0].to_string(),
-                                                    split[1].to_string(),
-                                                );
-                                            }
-                                            _ => {
-                                                return Err("Too many splits on one line in the options file".to_string());
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Err(_) => {}
-                }
-            }
-        }
-        Err(_) => return Err("Failure to open options.txt".to_string()),
-    }
-
-    return Ok(ret);
-}
-
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Functions @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@           @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 // get the current font size in the file
-pub fn get_file_fontSize(file: &str) -> Result<u32, String> {
+pub fn get_file_fontSize(file: &str) -> Result<usize, String> {
     match fs::read_to_string(file) {
         Ok(text) => {
             let re = Regex::new(r"(\d+)px").unwrap();
             match re.captures(&text) {
                 Some(getting) => match getting.get(1) {
-                    Some(tx) => match tx.as_str().parse::<u32>() {
+                    Some(tx) => match tx.as_str().parse::<usize>() {
                         Ok(size) => {
                             if size >= 10 {
                                 return Ok(size);
@@ -523,23 +411,21 @@ pub fn get_file_fontSize(file: &str) -> Result<u32, String> {
 }
 
 // create the body css with its defaults
-pub fn make_body_css(file: &str, fontSize: u32) -> Result<(), String> {
+pub fn make_body_css(file: &str, font_size: usize) -> Result<(), String> {
     // remove the old options file first
     match fs::metadata(file) {
-        Ok(_) => {
-            match remove_file(file){
-                Ok(_) => {}
-                Err(_) => {
-                    let message = format!("Could not remove the old {} file", file);
-                    return Err(message);
-                }
+        Ok(_) => match remove_file(file) {
+            Ok(_) => {}
+            Err(_) => {
+                let message = format!("Could not remove the old {} file", file);
+                return Err(message);
             }
-        }
+        },
         Err(_) => {}
     }
 
-// write the new one
-    let body = format!("body {{ font-size: {}px; }}", fontSize);
+    // write the new one
+    let body = format!("body {{ font-size: {}px; }}", font_size);
     match fs::write(file, body) {
         Ok(_) => return Ok(()),
 
@@ -548,6 +434,128 @@ pub fn make_body_css(file: &str, fontSize: u32) -> Result<(), String> {
             return Err(message);
         }
     }
+}
+
+// Function to make the header in the options file
+pub fn make_header() -> String {
+    let mut ret = String::new();
+    let now = lts_now();
+    let date = lts_to_date_string(now);
+    let time = lts_to_time_string(now);
+
+    ret.push_str("#######################\n");
+    ret.push_str("#                     #\n");
+    ret.push_str("# Generated File      #\n");
+    ret.push_str("#                     #\n");
+    ret.push_str("# Date: ");
+    ret.push_str(&date);
+    ret.push_str("    #\n");
+    ret.push_str("#                     #\n");
+    ret.push_str("# Time: ");
+    ret.push_str(&time);
+    ret.push_str("      #\n");
+    ret.push_str("#                     #\n");
+    ret.push_str("#######################\n");
+    ret.push_str("\n");
+    ret.push_str("\n");
+
+    return ret;
+}
+
+// Function to read in lines from options file into btreemap
+pub fn read_option_file_into(file: &str) -> Result<SettingsText, String> {
+    let res_file = File::open(file);
+    let mut ret = SettingsText::new();
+    let mut line_counter = 0;
+
+    match res_file {
+        Ok(_) => {
+            // Stores the iterator of lines of the file in lines variable.
+            let lines = read_lines(file.to_string());
+            // Iterate over the lines of the file.
+            for line in lines {
+                match line {
+                    Ok(lll) => {
+                        match lll.len() {
+                            // do nothing
+                            0 => {}
+                            _ => {
+                                let ch = lll.chars().nth(0).unwrap();
+                                match ch {
+                                    // do nothing
+                                    '#' => {}
+                                    _ => {
+                                        let split: Vec<&str> = lll.split("\t").collect();
+                                        match split.len() {
+                                            1 => {
+                                                return Err(
+                                                    "Only one split on one line in options file"
+                                                        .to_string(),
+                                                );
+                                            }
+
+                                            2 => {
+                                                ret.map.insert(
+                                                    split[0].to_string(),
+                                                    split[1].to_string(),
+                                                );
+                                                line_counter += 1;
+                                            }
+                                            _ => {
+                                                return Err("Too many splits on one line in the options file".to_string());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Err(_) => {}
+                }
+            }
+        }
+        Err(_) => return Err("Failure to open options.txt".to_string()),
+    }
+
+    // make sure something was loaded
+    if line_counter < 1 {
+        return Err("No lines in option file were loaded".to_string());
+    }
+
+    return Ok(ret);
+}
+
+pub fn save_options_file(st: SettingsText, file: &str) -> Result<(), String> {
+    // if old option file exists - delete it - no worries on error
+    let path = file;
+    if let Ok(metadata) = fs::metadata(path) {
+        if metadata.is_file() {
+            let result = fs::remove_file(path);
+            if result.is_err() {
+                return Err("Error in not removing old options file".to_string());
+            }
+        }
+    }
+
+    let mut block = make_header();
+
+    // add the btreemap
+    for (key, value) in st.map.iter() {
+        block.push_str(key);
+        block.push('\t');
+        block.push_str(value);
+        block.push('\n');
+    }
+
+    match fs::File::create(file) {
+        Ok(mut file) => match file.write_all(block.as_bytes()) {
+            Ok(_) => (),
+            Err(_) => return Err("An error occurred while writing the options file".to_string()),
+        },
+        Err(_) => return Err("An error occurred while creating the options file".to_string()),
+    }
+
+    Ok(())
 }
 
 /*
@@ -560,11 +568,9 @@ pub fn make_body_css(file: &str, fontSize: u32) -> Result<(), String> {
 #[warn(unused_assignments)]
 #[cfg(test)]
 mod tests {
-    use tauri::regex::SetMatches;
 
     //     DONT RUN THE TESTS ABOVE THIS LINE
     use super::*;
-    use std::fs::*;
 
     #[ignore]
     #[test]
@@ -589,7 +595,7 @@ mod tests {
         let result = SettingsText::load(destination);
         assert_eq!(result.clone().unwrap().map.len() > 1, true);
 
-        let result = result.clone().unwrap().save_options_file(destination);
+        let result = save_options_file(result.clone().unwrap(), destination);
         assert_eq!(result.is_ok(), true);
 
         let remove = remove_file(destination);
@@ -627,21 +633,15 @@ mod tests {
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
-        let mut st: SettingsText = SettingsText::new();
-        if let Ok(temp) = SettingsText::load(destination) {
-            st = temp;
-            let _remove = remove_file(destination);
-        }
-
         // what is the default font-size currently
-        let result = get_file_fontSize("./body.css");
+        let result = get_file_fontSize("./anything.css");
         assert_eq!(result.is_err(), true);
 
         let source = "./test/source/small_body.css";
         let destination = "./test/working/body.css";
         copy(source, destination).expect("Failed to copy");
 
-        let result = get_file_fontSize("./test/working/body.css");
+        let result = get_file_fontSize("./test/working/anything.css");
         let _remove = remove_file(destination);
         assert_eq!(result.is_err(), true);
 
@@ -652,8 +652,6 @@ mod tests {
         let result = get_file_fontSize(destination);
         let _remove = remove_file(destination);
         assert_eq!(result.unwrap(), 19);
-
-        // make_body_css(st)
     }
 
     #[ignore]
@@ -679,12 +677,35 @@ mod tests {
         assert_eq!(file_size, 19);
 
         // do we need to change font size
-        let current_size = st.get_integer("fontSize").unwrap() as u32;
+        let current_size = st.get_integer("fontSize").unwrap();
         if current_size != file_size {
             let destination = "./test/working/body.css";
             let result = make_body_css(destination, current_size);
             let _remove = remove_file(destination);
             assert_eq!(result.is_err(), false);
         }
+    }
+
+    #[ignore]
+    #[test]
+    fn t006_bringing_in() {
+        let source = "./test/source/empty-options.txt";
+        let destination = "../src/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        let load = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        assert_eq!(load.is_err(), true);
+
+        let source = "./test/source/default_options.txt";
+        let destination = "../src/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        let load = SettingsText::load(destination);
+        // let _remove = remove_file(destination);
+        assert_eq!(load.is_err(), false);
+
+        let result = SettingsText::bring_in_options();
+        assert_eq!(result.is_ok(), true);
     }
 } //end of tests
