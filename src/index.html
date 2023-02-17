@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="body.css" />
-    <link rel="stylesheet" href="style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
-    <script type="module" src="/main.js" defer></script>
-    <style>
-      .logo.vanilla:hover {
-        filter: drop-shadow(0 0 2em #ffe21c);
-      }
-    </style>
-  </head>
 
-  <body>
-    <div class="container">
-      <h1>Welcome to Tauri!</h1>
+<head>
+  <meta charset="UTF-8" />
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-      <div class="row">
-        <a href="https://tauri.app" target="_blank">
-          <img src="/assets/tauri.svg" class="logo tauri" alt="Tauri logo" />
-        </a>
-        <a
-          href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
-          target="_blank"
-        >
-          <img
-            src="/assets/javascript.svg"
-            class="logo vanilla"
-            alt="JavaScript logo"
-          />
-        </a>
-      </div>
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="body.css" />
+  <link rel="stylesheet" href="general.css" />
+  <link rel="stylesheet" href="header.css" />
 
-      <p>Click on the Tauri logo to learn more about the framework</p>
+  <!-- <link rel="stylesheet" href="style.css" /> -->
 
-      <div class="row">
-        <div>
-          <input id="greet-input" placeholder="Enter a name..." />
-          <button id="greet-button" type="button">Greet</button>
-        </div>
-      </div>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Free Birding</title>
+  <script type="module" src="/main.js" defer></script>
+  <style>
+  </style>
+</head>
 
-      <p id="greet-msg"></p>
+<body>
+  <div class="main-container">
+    <div class="header-container">
+      <button class="button-save">
+        1
+      </button>
+      <button class="button-save">
+        2
+      </button>
+      <button class="button-save">
+        3
+      </button>
+      <button class="button-save">
+        4
+      </button>
     </div>
-  </body>
+    <div class="tab-container">
+      Tabs
+    </div>
+    <div class="bottom-container">
+      Status
+    </div>
+  </div>
+  
+</body>
+
 </html>

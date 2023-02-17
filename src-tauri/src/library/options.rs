@@ -425,7 +425,7 @@ pub fn make_body_css(file: &str, font_size: usize) -> Result<(), String> {
     }
 
     // write the new one
-    let body = format!("body {{ font-size: {}px; }}", font_size);
+    let body = format!("html {{ font-size: {}px; }}", font_size);
     match fs::write(file, body) {
         Ok(_) => return Ok(()),
 
