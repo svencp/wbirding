@@ -1,25 +1,50 @@
+.button-bar {
+  display: grid;
+  grid-template-columns: repeat(5, 2.125em) 1fr 10em;
+  grid-template-rows: 2.125em;
 
+  padding: 0.125em;
 
-
-.header-container {
-  display: flex;
-  flex-direction: row;
-  /* justify-content: space-between; */
-
+  align-items: centes;
   text-align: center;
-  font-size: 1rem;
-  height: 2em;
-  color: black;
-  
-  background-color: rgb(248, 248, 248);
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-bottom-color: rgb(228, 228, 228);
 }
 
-.button-save {
-  font-size: inherit;
-  text-align: inherit;
-  /* color: blue; */
-
+.button-bar-button,
+.button-bar-text {
+  height: 1.5em;
 }
+
+.button-bar-button {
+  font-family: Roboto, Arial, sans-serif;
+  font-weight: 900;
+  font-style: italic;
+  font-size: 1.25rem;
+
+  background-color: #bbbbbb;
+  border: #333333;
+
+  border-radius: 1em;
+  width: 1.5em;
+}
+
+.button-bar-button:hover {
+  opacity: 0.7;
+}
+
+.button-bar-button:disabled {
+  opacity: 0.5;
+}
+
+.button-bar-text {
+  font-size: 0.875em;
+
+  padding-right: 0.25em;
+
+  align-self: center;
+  text-align: right;
+
+  pointer-events: none;
+}
+
+
+

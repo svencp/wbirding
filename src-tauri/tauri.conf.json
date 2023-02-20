@@ -61,9 +61,9 @@
       {
         "fullscreen": false,
         "height": 768,
-        "resizable": true,
+        "resizable": false,
         "title": "My Free Birding",
-        "width": 1366
+        "width": 1024
       }
     ]
   }

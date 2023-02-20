@@ -6,16 +6,17 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap"
+    rel="stylesheet">
+
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="body.css" />
   <link rel="stylesheet" href="general.css" />
   <link rel="stylesheet" href="header.css" />
 
-  <!-- <link rel="stylesheet" href="style.css" /> -->
+  <meta name="viewport" content="width=512, height=384, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Free Birding</title>
   <script type="module" src="/main.js" defer></script>
   <style>
@@ -24,19 +25,35 @@
 
 <body>
   <div class="main-container">
-    <div class="header-container">
-      <button class="button-save">
-        1
+
+    <!-- Button Bar -->
+    <div class="button-bar">
+      <button type="button" class="button-bar-button button-bar-save"  disabled>
+        <!-- <img src="./images/032x032_M_0.PNG"> -->
+        S
       </button>
-      <button class="button-save">
-        2
+      <button type="button" class="button-bar-button button-bar-increase">
+        <!-- <img src="./images/032x032_M_1.PNG"> -->
+        I
       </button>
-      <button class="button-save">
-        3
+      <button type="button" class="button-bar-button button-bar-decrease">
+        <!-- <img src="./images/032x032_M_2.PNG"> -->
+        D
       </button>
-      <button class="button-save">
-        4
+      <button type="button" class="button-bar-button button-bar-clear">
+        <!-- <img src="./images/032x032_M_3.PNG"> -->
+        C
       </button>
+      <button type="button" class="button-bar-button button-bar-exit">
+        <!-- <img src="./images/032x032_M_3.PNG"> -->
+        E
+      </button>
+      <div type="text" class="button-bar-text">
+        empty
+      </div>
+      <div type="text" class="button-bar-text">
+        50 ms
+      </div>
     </div>
     <div class="tab-container">
       Tabs
@@ -45,7 +62,7 @@
       Status
     </div>
   </div>
-  
+
 </body>
 
 </html>
