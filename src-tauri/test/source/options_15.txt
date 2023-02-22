@@ -23,4 +23,4 @@ myOlive	(177, 177, 0)
 myPurple	(110, 0, 110)
 myRed	(177, 0, 0)
 deadBirdIsSighting	true
-showResponseTimes	true
+

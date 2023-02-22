@@ -9,9 +9,9 @@ import {
 
 let returnString;
 
-async function incoming_command() {
+async function incoming_button_bar() {
   // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-  returnString = await invoke("incoming_command", {
+  returnString = await invoke("incoming_button_bar", {
     command: returnString
   });
   
@@ -47,7 +47,7 @@ buttons.forEach(button => {
   button.addEventListener('click', event => {
     const buttonId = event.target.id;
     returnString = buttonId;
-    incoming_command()
+    incoming_button_bar()
   });
 });
 

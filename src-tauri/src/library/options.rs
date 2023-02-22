@@ -53,14 +53,22 @@ impl SettingsText {
 
     // Gets the key from itsself and then parses the string to get the i32
     pub fn get_bool(&self, key: &str) -> Result<bool, String> {
-        let temp = self.map.get(key);
-        if temp.is_some() {
-            let value = temp.unwrap().parse::<bool>();
-            if value.is_ok() {
-                return Ok(value.unwrap());
+        let result = self.map.get(key);
+        match result {
+            Some(word) => {
+                let first_letter = &(word[0..1].to_owned())[..];
+                match first_letter {
+                    // if any of below then true
+                    "1" | "t" | "T" => return Ok(true),
+                    // otherwise false
+                    _ => return Ok(false),
+                }
+            }
+            None => {
+                let e = format!("Could not find the key '{}' in options file.", key);
+                return Err(e);
             }
         }
-        return Err("Could not parse boolean in options".to_string());
     }
 
     // Gets the key from itsself and then parses the string to get the usize
@@ -79,19 +87,19 @@ impl SettingsText {
         map.insert("fontSize".to_string(), "16".to_string());
         map.insert("lastSpeciesViewed".to_string(), "0".to_string());
         map.insert("lastSightingViewed".to_string(), "0".to_string());
-        map.insert("myBlack".to_string(), "(0, 0, 0)".to_string());
-        map.insert("myBlue".to_string(), "((7,140,245)".to_string());
-        map.insert("myBlueGreen".to_string(), "(0, 177, 177)".to_string());
-        map.insert("myDarkGray".to_string(), "(70, 70, 70)".to_string());
-        map.insert("myGreen".to_string(), "(0, 177, 0)".to_string());
-        map.insert("myLightBlue".to_string(), "(120, 220, 254)".to_string());
-        map.insert("myLightGray".to_string(), "(220, 220, 220)".to_string());
-        map.insert("myNormalGray".to_string(), "(177, 177, 177)".to_string());
-        map.insert("myOlive".to_string(), "(177, 177, 0)".to_string());
-        map.insert("myPurple".to_string(), "(110, 0, 110)".to_string());
-        map.insert("myRed".to_string(), "(177, 0, 0)".to_string());
-        map.insert("deadBirdIsSighting".to_string(), "true".to_string());
-        map.insert("showResponseTimes".to_string(), "true".to_string());
+        map.insert("showResponseTimes".to_string(), "1".to_string());
+        map.insert("deadBirdIsSighting".to_string(), "1".to_string());
+        // map.insert("myBlack".to_string(), "(0, 0, 0)".to_string());
+        // map.insert("myBlue".to_string(), "((7,140,245)".to_string());
+        // map.insert("myBlueGreen".to_string(), "(0, 177, 177)".to_string());
+        // map.insert("myDarkGray".to_string(), "(70, 70, 70)".to_string());
+        // map.insert("myGreen".to_string(), "(0, 177, 0)".to_string());
+        // map.insert("myLightBlue".to_string(), "(120, 220, 254)".to_string());
+        // map.insert("myLightGray".to_string(), "(220, 220, 220)".to_string());
+        // map.insert("myNormalGray".to_string(), "(177, 177, 177)".to_string());
+        // map.insert("myOlive".to_string(), "(177, 177, 0)".to_string());
+        // map.insert("myPurple".to_string(), "(110, 0, 110)".to_string());
+        // map.insert("myRed".to_string(), "(177, 0, 0)".to_string());
     }
 
     // function to load the options file or create a default one
@@ -122,14 +130,28 @@ impl SettingsText {
         }
     }
 
+    // Gets the key from itsself and then parses the string to get the i32
+    pub fn set_bool(&mut self, key: &str, boolean: bool) -> Result<(), String> {
+        let result = self.map.insert(key.to_string(), boolean.to_string());
+        if result.is_some() {
+            return Ok(());
+        }
+        let e = format!(
+            "Could not insert value: '{}' into key '{}' in options.",
+            boolean.to_string(),
+            key
+        );
+        return Err(e);
+    }
+
     // Gets the key from itsself and then parses the string to get the usize
     pub fn set_integer(&mut self, key: &str, size: usize) -> Result<(), String> {
         let result = self.map.insert(key.to_string(), size.to_string());
         if result.is_some() {
-            return Ok(())
+            return Ok(());
         }
-        let e = format!("Could not insert new value: {}",size);
-        return Err(e)
+        let e = format!("Could not insert new value: {}", size);
+        return Err(e);
     }
 
     // // This functions checks if one can read and write to the directory.
@@ -420,6 +442,15 @@ pub fn get_file_fontSize(file: &str) -> Result<usize, String> {
     }
 }
 
+// load the options file and return map
+pub fn get_options() -> Result<SettingsText, String> {
+    // match SettingsText::load(OPTIONS_FILENAME) {
+
+    // }
+
+    Err("hello".to_string())
+}
+
 // create the body css with its defaults, file is the name of the file to be created
 pub fn make_body_css(file: &str, font_size: usize) -> Result<(), String> {
     // remove the old options file first
@@ -615,15 +646,28 @@ mod tests {
     #[ignore]
     #[test]
     fn t003_load_existing() {
-        let source = "./test/source/bad_different.txt";
+        let source = "./test/source/empty-options.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
-        if let Ok(st) = SettingsText::load(destination) {
-            let num = st.get_integer("fontSize");
-            let _remove = remove_file(destination);
-            assert_eq!(num.is_err(), true);
-        }
+        // empty options file
+        let result = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        assert_eq!(result.is_err(), true);
+
+        let source = "./test/source/no_splits.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        // empty options file
+        let result = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        assert_eq!(result.is_err(), true);
+
+
+        // if let Ok(st) = SettingsText::load(destination) {
+        //     let num = st.get_integer("fontSize");
+        // }
 
         let source = "./test/source/different.txt";
         let destination = "./test/working/options.txt";
@@ -729,23 +773,74 @@ mod tests {
         let load = SettingsText::load(destination);
         let _remove = remove_file(destination);
         assert_eq!(load.is_ok(), true);
-        
+
         let mut options = load.unwrap();
         let font_size = options.get_integer("fontSize").unwrap();
         assert_eq!(font_size, 16);
-        
+
         let new_size = font_size + 1;
         let result = options.set_integer("fontSize", new_size);
-        if result.is_ok(){
+        if result.is_ok() {
             let _res = save_options_file(options, destination);
             let load = SettingsText::load(destination);
-            options =load.unwrap();
+            options = load.unwrap();
             let font_size = options.get_integer("fontSize").unwrap();
-            // let _remove = remove_file(destination);
+            let _remove = remove_file(destination);
             assert_eq!(font_size, 17);
         }
     }
-    
-    
-    
+
+    #[ignore]
+    #[test]
+    fn t008_get_set_bool() {
+        // get non-existent
+        let source = "./test/source/op_15.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        let mut load = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        let key = "showResponseTimesAnd".to_string();
+        let show = load.unwrap().get_bool(&key);
+        assert_eq!(show.is_err(), true);
+
+        // get bool
+        let source = "./test/source/bad_different.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        load = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        let key = "showResponseTimes".to_string();
+        let show = load.unwrap().get_bool(&key);
+        assert_eq!(show.is_ok(), true);
+        assert_eq!(show.unwrap(), false);
+
+        let source = "./test/source/default_options.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        load = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        let key = "showResponseTimes".to_string();
+        let show = load.clone().unwrap().get_bool(&key);
+        assert_eq!(show.is_ok(), true);
+        assert_eq!(show.unwrap(), true);
+
+        // set bool nonexistent
+        let key = "myOwnIndex".to_string();
+        let show = load.clone().unwrap().set_bool(&key, true);
+        assert_eq!(show.is_ok(), false);
+
+        // set bool
+        let key = "showResponseTimes".to_string();
+        let mut options = load.unwrap();
+        let _show = options.set_bool(&key, false);
+        let _result = save_options_file(options, destination);
+        load = SettingsText::load(destination);
+
+        let show = load.clone().unwrap().get_bool(&key);
+        assert_eq!(show.is_ok(), true);
+        assert_eq!(show.unwrap(), false);
+    }
 } //end of tests
