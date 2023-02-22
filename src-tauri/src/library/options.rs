@@ -122,6 +122,16 @@ impl SettingsText {
         }
     }
 
+    // Gets the key from itsself and then parses the string to get the usize
+    pub fn set_integer(&mut self, key: &str, size: usize) -> Result<(), String> {
+        let result = self.map.insert(key.to_string(), size.to_string());
+        if result.is_some() {
+            return Ok(())
+        }
+        let e = format!("Could not insert new value: {}",size);
+        return Err(e)
+    }
+
     // // This functions checks if one can read and write to the directory.
     // // Again for testing puposes I have to input a file with a directory.
     // pub fn file_system_ok(test: &str) -> Result<(), String> {
@@ -410,7 +420,7 @@ pub fn get_file_fontSize(file: &str) -> Result<usize, String> {
     }
 }
 
-// create the body css with its defaults
+// create the body css with its defaults, file is the name of the file to be created
 pub fn make_body_css(file: &str, font_size: usize) -> Result<(), String> {
     // remove the old options file first
     match fs::metadata(file) {
@@ -690,7 +700,7 @@ mod tests {
     #[test]
     fn t006_bringing_in() {
         let source = "./test/source/empty-options.txt";
-        let destination = "../src/options.txt";
+        let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
         let load = SettingsText::load(destination);
@@ -708,4 +718,34 @@ mod tests {
         let result = SettingsText::bring_in_options();
         assert_eq!(result.is_ok(), true);
     }
+
+    #[ignore]
+    #[test]
+    fn t007_set_integer() {
+        let source = "./test/source/default_options.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+
+        let load = SettingsText::load(destination);
+        let _remove = remove_file(destination);
+        assert_eq!(load.is_ok(), true);
+        
+        let mut options = load.unwrap();
+        let font_size = options.get_integer("fontSize").unwrap();
+        assert_eq!(font_size, 16);
+        
+        let new_size = font_size + 1;
+        let result = options.set_integer("fontSize", new_size);
+        if result.is_ok(){
+            let _res = save_options_file(options, destination);
+            let load = SettingsText::load(destination);
+            options =load.unwrap();
+            let font_size = options.get_integer("fontSize").unwrap();
+            // let _remove = remove_file(destination);
+            assert_eq!(font_size, 17);
+        }
+    }
+    
+    
+    
 } //end of tests

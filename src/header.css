@@ -5,8 +5,10 @@
 
   padding: 0.125em;
 
-  align-items: centes;
+  align-items: center;
   text-align: center;
+
+  background-color: lightpink;
 }
 
 .button-bar-button,

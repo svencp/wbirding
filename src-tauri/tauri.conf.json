@@ -20,7 +20,7 @@
     },
     "bundle": {
       "active": true,
-      "category": "Birding Recorder",
+      "category": "DeveloperTool",
       "copyright": "",
       "deb": {
         "depends": []
@@ -33,7 +33,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.tauri.build",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -61,7 +61,8 @@
       {
         "fullscreen": false,
         "height": 768,
-        "resizable": false,
+        "resizable": true,
+        "alwaysOnTop": false,
         "title": "My Free Birding",
         "width": 1024
       }
