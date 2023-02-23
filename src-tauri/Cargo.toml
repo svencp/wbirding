@@ -15,7 +15,7 @@ tauri-build = { version = "1.2", features = [] }
 [dependencies]
 serde_json = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-tauri = { version = "1.2", features = ["shell-open"] }
+tauri = { version = "1.2", features = ["api-all"] }
 error_feedback = "0.1.0"
 local_timestamps = "0.1.5"
 indexmap = "1.9.2"

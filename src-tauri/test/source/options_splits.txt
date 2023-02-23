@@ -10,9 +10,9 @@
 
 
 
-lastSpeciesViewed	0
-lastSightingViewed	alpha
-myBlack	(0, 0, 0)
+lastSpeciesViewed	0 kjhkjh
+lastSightingViewed
+myBlack
 myBlue	((7,140,245)
 myBlueGreen	(0, 177, 177)
 myDarkGray	(70, 70, 70)

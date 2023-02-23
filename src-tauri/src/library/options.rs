@@ -442,13 +442,17 @@ pub fn get_file_fontSize(file: &str) -> Result<usize, String> {
     }
 }
 
-// load the options file and return map
-pub fn get_options() -> Result<SettingsText, String> {
-    // match SettingsText::load(OPTIONS_FILENAME) {
-
-    // }
-
-    Err("hello".to_string())
+// load the options file and return an integer
+pub fn get_options_integer(options_filename: &str, key: &str) -> Result<usize, String> {
+    match SettingsText::load(options_filename) {
+        Ok(st) => match st.get_integer(key) {
+            Ok(num) => return Ok(num),
+            //bad key
+            Err(e) => return Err(e),
+        },
+        // bad file
+        Err(e) => return Err(e),
+    }
 }
 
 // create the body css with its defaults, file is the name of the file to be created
@@ -616,7 +620,7 @@ mod tests {
     #[ignore]
     #[test]
     fn t001_delete_old_options() {
-        let source = "./test/source/empty-options.txt";
+        let source = "./test/source/options_empty.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -646,7 +650,7 @@ mod tests {
     #[ignore]
     #[test]
     fn t003_load_existing() {
-        let source = "./test/source/empty-options.txt";
+        let source = "./test/source/options_empty.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -655,7 +659,7 @@ mod tests {
         let _remove = remove_file(destination);
         assert_eq!(result.is_err(), true);
 
-        let source = "./test/source/no_splits.txt";
+        let source = "./test/source/options_splits.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -664,12 +668,7 @@ mod tests {
         let _remove = remove_file(destination);
         assert_eq!(result.is_err(), true);
 
-
-        // if let Ok(st) = SettingsText::load(destination) {
-        //     let num = st.get_integer("fontSize");
-        // }
-
-        let source = "./test/source/different.txt";
+        let source = "./test/source/options_different.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -683,7 +682,7 @@ mod tests {
     #[ignore]
     #[test]
     fn t004_make_body_css() {
-        let source = "./test/source/different.txt";
+        let source = "./test/source/options_different.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -711,7 +710,7 @@ mod tests {
     #[ignore]
     #[test]
     fn t005_make_body_css() {
-        let source = "./test/source/different.txt";
+        let source = "./test/source/options_different.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -743,7 +742,7 @@ mod tests {
     #[ignore]
     #[test]
     fn t006_bringing_in() {
-        let source = "./test/source/empty-options.txt";
+        let source = "./test/source/options_empty.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -751,7 +750,7 @@ mod tests {
         let _remove = remove_file(destination);
         assert_eq!(load.is_err(), true);
 
-        let source = "./test/source/default_options.txt";
+        let source = "./test/source/options_default.txt";
         let destination = "../src/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -766,7 +765,7 @@ mod tests {
     #[ignore]
     #[test]
     fn t007_set_integer() {
-        let source = "./test/source/default_options.txt";
+        let source = "./test/source/options_default.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -794,7 +793,7 @@ mod tests {
     #[test]
     fn t008_get_set_bool() {
         // get non-existent
-        let source = "./test/source/op_15.txt";
+        let source = "./test/source/options_15.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -805,7 +804,7 @@ mod tests {
         assert_eq!(show.is_err(), true);
 
         // get bool
-        let source = "./test/source/bad_different.txt";
+        let source = "./test/source/options_bad_different.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -816,7 +815,7 @@ mod tests {
         assert_eq!(show.is_ok(), true);
         assert_eq!(show.unwrap(), false);
 
-        let source = "./test/source/default_options.txt";
+        let source = "./test/source/options_default.txt";
         let destination = "./test/working/options.txt";
         copy(source, destination).expect("Failed to copy");
 
@@ -842,5 +841,30 @@ mod tests {
         let show = load.clone().unwrap().get_bool(&key);
         assert_eq!(show.is_ok(), true);
         assert_eq!(show.unwrap(), false);
+    }
+
+    #[ignore]
+    #[test]
+    fn t009_get_options_integer() {
+        // get non-existent
+        let destination = "./test/working/none.txt";
+        let num = get_options_integer(destination, "fontSize").unwrap();
+        assert_eq!(num, 16);
+        
+        let source = "./test/source/options_bad_different.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+        
+        //key does not have right type
+        let num = get_options_integer(destination, "lastSightingViewed");
+        assert_eq!(num.is_err(), true);
+        
+        let source = "./test/source/options_15.txt";
+        let destination = "./test/working/options.txt";
+        copy(source, destination).expect("Failed to copy");
+        
+        let num = get_options_integer(destination, "fontSize").unwrap();
+        assert_eq!(num, 15);
+        
     }
 } //end of tests

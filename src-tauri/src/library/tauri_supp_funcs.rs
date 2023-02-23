@@ -10,7 +10,7 @@ pub fn process_button_clicked(command: &str) -> String {
     match command {
         "button-bar-save" => return "Save button was clicked!".to_string(),
         "button-bar-increase" => {
-            let result = increase_fontSize_in_files();
+            let result = increase_font_size_in_files();
             let mut options = SettingsText::new();
             match SettingsText::bring_in_options() {
                 Ok(sett) => {
@@ -24,8 +24,8 @@ pub fn process_button_clicked(command: &str) -> String {
             return "button-bar-increase".to_string();
         }
         "button-bar-decrease" => return "button-bar-decrease".to_string(),
-        "button-bar-clear" => return "clear button was clicked!".to_string(),
-        "button-bar-exit" => return "exit button was clicked!".to_string(),
+        "button-bar-clear" => return "button-bar-clear".to_string(),
+        "button-bar-exit" => return "button-bar-exit".to_string(),
         _ => return "Unrecognized button clicked".to_string(),
     }
 
@@ -35,11 +35,11 @@ pub fn process_button_clicked(command: &str) -> String {
 
 //@@@@@@@ Support functions
 //@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-pub fn increase_fontSize_in_files() -> Result<(),String> {
+pub fn increase_font_size_in_files() -> Result<(),String> {
     
     
     
-    return Err("No way".to_string())
+    return Err("No increase_font_size_in_files".to_string())
 }
 
 

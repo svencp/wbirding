@@ -13,9 +13,14 @@ use error_feedback::*;
 #[tauri::command]
 fn incoming_button_bar(command: &str) -> String {
     return process_button_clicked(command);
-    
-
 }
+
+// initialization of javascript
+#[tauri::command]
+fn init() -> String {
+    return "init baby!".to_string();
+}
+
 
 fn main() {
     // // @@@@@@@ Variables
@@ -30,7 +35,7 @@ fn main() {
     // @@@@@@@ Showing front-end
     println!("This is from the main.rs -> Sven");
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![incoming_button_bar])
+        .invoke_handler(tauri::generate_handler![incoming_button_bar, init])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

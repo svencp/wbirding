@@ -2,7 +2,8 @@
 
 
 .middle-container {
-  height: 39em;
+  /* height: 39em; */
+  height: 19em;
 
   background-color: lightblue;
 }

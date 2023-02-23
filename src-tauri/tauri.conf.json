@@ -12,7 +12,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false,
+      "all": true,
       "shell": {
         "all": false,
         "open": true
@@ -60,11 +60,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 768,
+        "height": 384,
         "resizable": true,
         "alwaysOnTop": false,
         "title": "My Free Birding",
-        "width": 1024
+        "width": 512
       }
     ]
   }
