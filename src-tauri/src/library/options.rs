@@ -10,6 +10,8 @@ use local_timestamps::*;
 use regex::Regex;
 use std::fs::{self, *};
 use std::io::prelude::*;
+use anyhow::{Context, Result};
+
 
 pub const OPTIONS_FILENAME: &str = "./options.txt";
 pub const BODY_FILENAME: &str = "../src/body.css";
@@ -122,6 +124,7 @@ impl SettingsText {
 
         Ok(ret)
     }
+
 
     // create a new empty SettingsText
     pub fn new() -> SettingsText {

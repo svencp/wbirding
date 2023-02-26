@@ -4,14 +4,13 @@
 <head>
   <meta charset="UTF-8" />
   <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,400;0,500;1,500&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,900&display=swap" rel="stylesheet">
 
+  
 
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="body.css" />
+  <link rel="stylesheet" href="fonts.css" />
   <link rel="stylesheet" href="general.css" />
   <link rel="stylesheet" href="header.css" />
   <link rel="stylesheet" href="middle.css" />
@@ -30,33 +29,25 @@
 <body>
   <div class="main-container">
 
-    <!-- Button Bar -->
+    <!-- Main Bar -->
     <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ -->
-    <div class="button-bar">
-      <button id="button-bar-save" type="button" class="button-bar-button button-bar-save" disabled>
-        <!-- <img src="./images/032x032_M_0.PNG"> -->
-        S
+    <div class="main-bar">
+      <button id="main-bar-save" type="button" class="main-bar-button main-bar-save">
+        <img src="./images/032x032_M_0.PNG" class="button-icon">
+        <div class="main-bar-button-text">Save</div>
       </button>
-      <button id="button-bar-increase" type="button" class="button-bar-button button-bar-increase">
-        <!-- <img src="./images/032x032_M_1.PNG"> -->
-        I
+      <button id="main-bar-clear" type="button" class="main-bar-button main-barclear">
+        <img src="./images/032x032_M_2.PNG" class="button-icon">
+        <div class="main-bar-button-text">Clear Log</div>
       </button>
-      <button id="button-bar-decrease" type="button" class="button-bar-button button-bar-decrease">
-        <!-- <img src="./images/032x032_M_2.PNG"> -->
-        D
+      <button id="main-bar-exit" type="button" class="main-bar-button main-bar-exit">
+        <img src="./images/032x032_M_3.PNG" class="button-icon">
+        <div class="main-bar-button-text">Exit</div>
       </button>
-      <button id="button-bar-clear" type="button" class="button-bar-button button-bar-clear">
-        <!-- <img src="./images/032x032_M_3.PNG"> -->
-        C
-      </button>
-      <button id="button-bar-exit" type="button" class="button-bar-button button-bar-exit">
-        <!-- <img src="./images/032x032_M_3.PNG"> -->
-        E
-      </button>
-      <div type="text" class="button-bar-text">
+      <div type="text" class="main-bar-text-elements">
         empty
       </div>
-      <div type="text" class="button-bar-text">
+      <div type="text" class="main-bar-text-elements">
         50 ms
       </div>
     </div>

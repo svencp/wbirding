@@ -1,35 +1,117 @@
-.button-bar {
+.main-bar {
+  font-family: mySans, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.75rem;
+
   display: grid;
-  grid-template-columns: repeat(5, 2.125em) 1fr 10em;
-  grid-template-rows: 2.125em;
+  grid-template-columns: repeat(3, auto) 1fr 5rem;
+  grid-template-rows: 1fr;
+  gap: .625rem;
+  justify-content: left;
 
-  padding: 0.125em;
-
+  padding-left: 0.3125rem;
   align-items: center;
   text-align: center;
 
-  background-color: lightpink;
+  /* background-color: var(--my-gray); */
 }
 
-.button-bar-button,
-.button-bar-text {
+
+
+
+.main-bar-button {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: 2.125em;
+
+
+  align-items: center;
+  text-align: center;
+  justify-content: left;
+
+  /* background-color: rgb(100, 250, 230); */
+  background-color: var(--my-gray);
+  
+  margin: 0.125rem;
+  padding: 0.125rem;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--my-gray);
+  border-radius: 3px;
+}
+
+.main-bar-button:hover {
+  border-color: var(--my-lightblue);
+}
+/* .main-bar-button:focus {
+  background-color: var(--my-lightblue2);
+  z-index: 100;
+} */
+
+
+.button-icon {
+  width: 1.625rem;
+  height: 1.625rem;
+  
+  
+  padding: 2px 5px 2px 3px;
+  
+  background-color: var(--my-gray);
+  /* background-color: rgb(200, 200, 250); */
+}
+
+.main-bar-button-text {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  
+  background-color: var(--my-gray);
+  /* background-color: rgb(183, 136, 159); */
+  padding: 2px 2px 2px 3px;
+}
+
+
+
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(7, auto);
+  grid-template-rows: 1fr;
+  gap: 10px;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+
+
+/* .main-bar-button,
+.main-bar-text {
   height: 1.5em;
 }
 
 .button-bar-button {
-  font-family: Roboto, Arial, sans-serif;
-  font-weight: 900;
-  font-style: italic;
-  font-size: 1.25rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 2em;
 
-  background-color: #bbbbbb;
+  font-family: mySans;
+  font-weight: 700;
+  font-style: oblique;
+  font-size: 1rem;
+
+  background-color: #f094e2;
   border: #333333;
 
-  border-radius: 1em;
-  width: 1.5em;
-}
 
-.button-bar-button:hover {
+} */
+
+/* .button-bar-button:hover {
   opacity: 0.7;
 }
 
@@ -37,7 +119,19 @@
   opacity: 0.5;
 }
 
-.button-bar-text {
+.button-icon {
+  width: 2em;
+  height: auto;
+}
+
+.button-bar-button-text {
+  font-family: mySans;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 0.75rem;
+}
+
+.button-bar-text-elements {
   font-size: 0.875em;
 
   padding-right: 0.25em;
@@ -46,7 +140,4 @@
   text-align: right;
 
   pointer-events: none;
-}
-
-
-
+} */

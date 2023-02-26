@@ -1,0 +1,214 @@
+:root {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+
+
+/******* Sans *******/
+@font-face {
+  font-family: mySans;
+  src: url(./fonts/DejaVuSans-ExtraLight-100.ttf);
+  font-style: normal;
+  font-weight: 100;
+}
+
+@font-face {
+  font-family: mySans;
+  src: url(./fonts/DejaVuSans-400.ttf);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: mySans;
+  src: url(./fonts/DejaVuSans-Bold-700.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: mySans;
+  src: url(./fonts/DejaVuSans-BoldOblique-700.ttf);
+  font-style: oblique;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: mySans;
+  src: url(./fonts/DejaVuSans-Oblique-400.ttf);
+  font-style: oblique;
+  font-weight: 400;
+}
+
+
+/******* Serif *******/
+@font-face {
+  font-family: myMath;
+  src: url(./fonts/DejaVuMathTeXGyre-400.ttf);
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: mySerif;
+  src: url(./fonts/DejaVuSerif-400.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySerif;
+  src: url(./fonts/DejaVuSerif-Italic-400.ttf);
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySerif;
+  src: url(./fonts/DejaVuSerif-Bold-700.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+
+@font-face {
+  font-family: mySerif;
+  src: url(./fonts/DejaVuSerif-BoldItalic-700.ttf);
+  font-style: italic;
+  font-weight: 700;
+}
+
+
+/******* Mono *******/
+@font-face {
+  font-family: mySansMono;
+  src: url(./fonts/DejaVuSansMono-400.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySansMono;
+  src: url(./fonts/DejaVuSansMono-Oblique-400.ttf);
+  font-style: oblique;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySansMono;
+  src: url(./fonts/DejaVuSansMono-Bold-700.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: mySansMono;
+  src: url(./fonts/DejaVuSansMono-BoldOblique-700.ttf);
+  font-style: oblique;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: myRobotoMono;
+  src: url(./fonts/RobotoMono-Regular-400.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: myRobotoMono;
+  src: url(./fonts/RobotoMono-Medium-500.ttf);
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: myRobotoMono;
+  src: url(./fonts/RobotoMono-SemiBold-600.ttf);
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: myRobotoMono;
+  src: url(./fonts/RobotoMono-Bold-700.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+
+
+
+
+/******* Condensed *******/
+@font-face {
+  font-family: mySansCondensed;
+  src: url(./fonts/DejaVuSansCondensed-400.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySansCondensed;
+  src: url(./fonts/DejaVuSansCondensed-Oblique-400.ttf);
+  font-style: oblique;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySansCondensed;
+  src: url(./fonts/DejaVuSansCondensed-Bold-700.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: mySansCondensed;
+  src: url(./fonts/DejaVuSansCondensed-BoldOblique-700.ttf);
+  font-style: oblique;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: mySerifCondensed;
+  src: url(./fonts/DejaVuSerifCondensed-400.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySerifCondensed;
+  src: url(./fonts/DejaVuSerifCondensed-Italic-400.ttf);
+  font-style: italic;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: mySerifCondensed;
+  src: url(./fonts/DejaVuSerifCondensed-Bold-700.ttf);
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: mySerifCondensed;
+  src: url(./fonts/DejaVuSerifCondensed-BoldItalic-700.ttf);
+  font-style: italic;
+  font-weight: 700;
+}
+
+/******* Weird *******/
+@font-face {
+  font-family: myMonofett;
+  src: url(./fonts/Monofett-Regular-400.ttf);
+  font-style: normal;
+  font-weight: 400;
+}
+
+
+
+

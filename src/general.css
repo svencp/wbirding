@@ -3,7 +3,12 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* -webkit-text-size-adjust: 100%; */
+  -webkit-text-size-adjust: 100%;
+
+  --my-gray: #c6c7c9;
+  --my-lightblue: rgb(61,174,233);
+  --my-lightblue2: rgb(81,204,253);
+
 }
 
 * {
@@ -12,23 +17,7 @@
 }
 
 
-/* @font-face {
-  font-family: 'NotoSansMono';
-  src: url('./fonts/NotoSansMono-VariableFont_wdth,wght.ttf') format('ttf')
-} */
-
-
-
-
 body {
-  font-family: Roboto, Arial, sans-serif;
-  font-weight: 400;
-
-  /* font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%; */
 
   overflow-x: hidden;
 
@@ -38,15 +27,7 @@ body {
 .main-container {
   display: grid;
   grid-template-columns: 1fr;
-  
+
   background-color: rgb(255, 255, 255);
   margin-left: .125em;
 }
-
-
-
-
-
-
-
-

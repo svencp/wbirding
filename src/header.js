@@ -85,5 +85,5 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// restoreWindowPositionAndSize();
+console.log("THis ran - Svenny");
 

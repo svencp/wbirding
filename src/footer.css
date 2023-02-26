@@ -38,10 +38,10 @@
 }
 
 .textAreaStatus {
-  font-family: Roboto Mono, Arial, sans-serif; 
+  font-family: mySansMono, sans-serif;
   font-weight: 400;
-  /* font-style: italic; */
-  font-size: 1rem;
+  font-style: normal;
+  font-size: 0.75rem;
 
   padding-left: 0.5rem;
   padding-right: 0.5rem;
